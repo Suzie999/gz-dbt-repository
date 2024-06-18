@@ -1,0 +1,40 @@
+version: 2
+
+sources:
+  - name: raw
+    schema: wk4_gwz_raw_data
+
+    tables:
+      - name: product
+        identifier: raw_gz_product
+
+        description: "list of product_id"
+
+      - name: sales
+        identifier: raw_gz_sales
+
+        description: "list of items sold"
+
+      - name: ship
+        identifier: raw_gz_ship
+
+        description: "shipping information"
+
+models:
+    - name: my_first_dbt_model
+      description: "A starter dbt model"
+      columns:
+          - name: id
+            description: "The primary key for this table"
+            tests:
+                - unique
+                - not_null
+
+    - name: my_second_dbt_model
+      description: "A starter dbt model"
+      columns:
+          - name: id
+            description: "The primary key for this table"
+            tests:
+                - unique
+                - not_null
