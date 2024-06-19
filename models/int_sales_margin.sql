@@ -3,8 +3,8 @@ select
     ,date_date
     ,orders_id
     ,revenue
-    ,quantity
-    ,CAST(purchse_price AS FLOAT64)
+    ,quantity 
+    ,CAST(purchse_price AS FLOAT64) AS purchse_price
     ,ROUND(s.quantity*CAST(p.purchse_price AS FLOAT64),2) AS purchase_cost
     ,s.revenue - ROUND(s.quantity*CAST(p.purchse_price AS FLOAT64),2) AS margin
 
