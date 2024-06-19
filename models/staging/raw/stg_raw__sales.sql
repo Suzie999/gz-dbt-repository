@@ -13,7 +13,7 @@ renamed as (
         orders_id,
         pdt_id AS products_id,
         revenue,
-        quantity
+        CAST(quantity AS INTEGER) AS quantity
 
     from source
 
