@@ -3,38 +3,58 @@ version: 2
 sources:
   - name: raw
     schema: wk4_gwz_raw_data
+    description: "raw data source of gwz"
 
     tables:
       - name: product
         identifier: raw_gz_product
-
-        description: "list of product_id"
+        description: "products sold"
+        columns:
+          - name: products_id 
+            description: primary key for this table
+            tests:
+              - unique
+              - not_null
+          - name: purchSE_PRICE 
+            description: purchase price
 
       - name: sales
+        freshness: 
+           warn_after: {count: 90, period: day}
+        loaded_at_field: "CAST (date_date AS TIMESTAMP)"
+      
         identifier: raw_gz_sales
-
-        description: "list of items sold"
-
+        description: "one row per product id found in each order id"
+        tests:
+                - unique:
+                   column_name: "(pdt_id || '-' ||orders_id)"  
+                
+        columns:
+          - name: date_date
+            description: date purchase made
+          - name: orders_id
+            description: foreign key to ship
+          - name: products_id
+            description: foreign key to ship
+          - name: revenue
+            description: "purchase price of product by quantity sold"
+          - name: quantity
+            description: "quantity purchased on the order"
+            
       - name: ship
         identifier: raw_gz_ship
-
         description: "shipping information"
-
-models:
-    - name: my_first_dbt_model
-      description: "A starter dbt model"
-      columns:
-          - name: id
-            description: "The primary key for this table"
+              
+        columns:
+          - name: orders_id
+            description: primary key for this table
             tests:
-                - unique
-                - not_null
+              - unique
+              - not_null
 
-    - name: my_second_dbt_model
-      description: "A starter dbt model"
-      columns:
-          - name: id
-            description: "The primary key for this table"
-            tests:
-                - unique
-                - not_null
+          - name: shipping_fee
+            description: "price paid by customer for shipping" 
+          - name: logCost
+            description: "logistics costs for preparing the shipment" 
+          - name: ship_cost
+            description: "transporter costs paid by GWZ to ship order"   

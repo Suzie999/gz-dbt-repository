@@ -10,10 +10,11 @@ renamed as (
 
     select
         products_id,
-        purchse_price AS purchases_price
+        purchse_price
 
     from source
 
 )
 
 select * from renamed
+  
