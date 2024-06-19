@@ -58,3 +58,49 @@ sources:
             description: "logistics costs for preparing the shipment" 
           - name: ship_cost
             description: "transporter costs paid by GWZ to ship order"   
+
+      - name: sales_margin
+        identifier: int_sales_margin
+        description: "joined stg.sales and stg.products with aggregations for sales margins"
+        tests:
+          - unique:
+              column_name: "(orders_id || '-' || products_id)"
+          - not_null:
+              column_name:
+                - orders_id
+                - products_id        
+                - margin   
+                - purchase_cost           
+                - date_date             
+                - revenue              
+                - quantity
+             
+      - name: orders_margin
+        identifier: int_orders_margin
+        description: "calculating the orders margin based on the sales margin file"
+        tests:
+          - unique:
+              column_name: "(orders_id || '-' || date_date)"
+          - not_null:
+              column_name:
+                - orders_id
+                - margin
+                - purchase_cost      
+                - date_date            
+                - revenue           
+                - quantity
+           
+      - name: operational_margin
+        identifier: int_orders_operational
+        description: "all information about the orders from an operational level including costs and margins"
+        tests:
+          - unique:
+              column_name: "(orders_id || '-' || date_date)"
+          - not_null:
+              column_name:
+                - orders_id             
+                - margin   
+                - purchase_cost               
+                - date_date                         
+                - quantity          
+                - operational_margin       
